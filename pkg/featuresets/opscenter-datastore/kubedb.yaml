@@ -1,0 +1,35 @@
+kubedb-crd-manager:
+  securityContext:
+    runAsUser: {{ .uid }}
+kubedb-provisioner:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+kubedb-webhook-server:
+  server:
+    securityContext:
+      runAsUser: {{ .uid }}
+kubedb-ops-manager:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+kubedb-autoscaler:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+kubedb-schema-manager:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+sidekick.image:
+  securityContext:
+    runAsUser: {{ .uid }}
+petset:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+  rbacproxy:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext:
+    fsGroup: {{ .uid }}

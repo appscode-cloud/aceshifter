@@ -1,0 +1,26 @@
+# --  [Pod security context] for all pods
+# @default -- [See below](#KEDA-is-secure-by-default)
+podSecurityContext:
+  # -- [Pod security context] of the KEDA operator pod
+  # @default -- [See below](#KEDA-is-secure-by-default)
+  operator:
+    runAsNonRoot: true
+    runAsUser: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    fsGroup: {{ .uid }}
+
+  # -- [Pod security context] of the KEDA metrics apiserver pod
+  # @default -- [See below](#KEDA-is-secure-by-default)
+  metricServer:
+    runAsNonRoot: true
+    runAsUser: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    fsGroup: {{ .uid }}
+
+  # -- [Pod security context] of the KEDA admission webhooks
+  # @default -- [See below](#KEDA-is-secure-by-default)
+  webhooks:
+    runAsNonRoot: true
+    runAsUser: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    fsGroup: {{ .uid }}

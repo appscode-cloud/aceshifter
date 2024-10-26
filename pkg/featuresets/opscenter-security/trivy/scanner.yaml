@@ -1,0 +1,18 @@
+app:
+  securityContext:
+    runAsUser: {{ .uid }}
+
+etcd:
+  securityContext:
+    runAsUser: {{ .uid }}
+
+kine:
+  securityContext:
+    runAsUser: {{ .uid }}
+
+cacher:
+  securityContext:
+    runAsUser: {{ .uid }}
+
+podSecurityContext:
+  fsGroup: {{ .uid }}

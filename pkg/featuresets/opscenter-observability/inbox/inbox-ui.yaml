@@ -1,0 +1,6 @@
+podSecurityContext: {}
+  # fsGroup: {{ .uid }}
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: {{ .uid }}

@@ -1,0 +1,13 @@
+kubevault-operator:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext: {}
+    # fsGroup: {{ .uid }}
+
+kubevault-webhook-server:
+  server:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext: {}
+    # fsGroup: {{ .uid }}

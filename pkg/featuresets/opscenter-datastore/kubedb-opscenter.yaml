@@ -1,0 +1,12 @@
+kubedb-ui-server:
+  image:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+kubedb-grafana-dashboards:
+  image:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext:
+    fsGroup: {{ .uid }}

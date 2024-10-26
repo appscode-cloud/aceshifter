@@ -1,0 +1,85 @@
+accounts-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+billing:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+billing-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+cluster-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+deploy-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+dns-proxy:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+grafana:
+  podSecurityContext: {}
+    # fsGroup: {{ .uid }}
+  securityContext:
+    runAsGroup: {{ .uid }}
+    runAsUser: {{ .uid }}
+ingress-nginx:
+  controller:
+    image:
+      runAsUser: {{ .uid }}
+inbox-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+kubedb-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+marketplace-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+platform-api:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+platform-links:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+platform-ui:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+s3proxy:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+smtprelay:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+trickster:
+  podSecurityContext: {}
+    # fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}

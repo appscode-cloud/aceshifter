@@ -1,0 +1,10 @@
+image:
+  securityContext:
+    runAsUser: {{ .uid }}
+
+cleaner:
+  securityContext:
+    runAsUser: {{ .uid }}
+
+podSecurityContext:
+  fsGroup: {{ .uid }}

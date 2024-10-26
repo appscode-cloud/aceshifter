@@ -1,0 +1,8 @@
+operator:
+  securityContext:
+    runAsUser: {{ .uid }}
+rbacproxy:
+  securityContext:
+    runAsUser: {{ .uid }}
+podSecurityContext:
+  fsGroup: {{ .uid }}

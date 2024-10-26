@@ -1,0 +1,6 @@
+stash-ui-server:
+  image:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext:
+    fsGroup: {{ .uid }}

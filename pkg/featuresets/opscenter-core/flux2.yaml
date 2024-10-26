@@ -1,0 +1,29 @@
+helmController:
+  securityContext: &scc
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: {{ .uid }}
+    seccompProfile:
+      type: RuntimeDefault
+
+sourceController:
+  securityContext: *scc
+
+imageAutomationController:
+  securityContext: *scc
+
+imageReflectionController:
+  securityContext: *scc
+
+kustomizeController:
+  securityContext: *scc
+
+notificationController:
+  securityContext: *scc
+
+cli:
+  securityContext: *scc

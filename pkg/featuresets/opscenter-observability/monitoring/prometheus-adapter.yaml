@@ -1,0 +1,5 @@
+podSecurityContext:
+  fsGroup: {{ .uid }}
+
+securityContext:
+  runAsUser: {{ .uid }}

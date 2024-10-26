@@ -1,0 +1,15 @@
+# containerSecurityContext -- [Security context for container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+
+# securityContext -- [Security context for pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+securityContext:
+  runAsNonRoot: true
+  runAsUser: {{ .uid }}
+  runAsGroup: {{ .uid }}
+  seccompProfile:
+     type: RuntimeDefault

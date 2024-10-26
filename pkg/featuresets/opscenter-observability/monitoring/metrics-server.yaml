@@ -1,0 +1,8 @@
+podSecurityContext: {}
+
+securityContext:
+  runAsUser: {{ .uid }}
+
+addonResizer:
+  securityContext:
+    runAsUser: {{ .uid }}

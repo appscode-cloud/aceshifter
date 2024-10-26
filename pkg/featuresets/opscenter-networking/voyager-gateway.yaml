@@ -1,0 +1,18 @@
+deployment:
+  envoyGateway:
+    securityContext:
+      runAsGroup: {{ .uid }}
+      runAsUser: {{ .uid }}
+
+certgen:
+  job:
+    securityContext:
+      runAsGroup: {{ .uid }}
+      runAsUser: {{ .uid }}
+
+gateway-converter:
+  server:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext:
+    fsGroup: {{ .uid }}

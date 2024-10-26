@@ -1,0 +1,12 @@
+kubestash-operator:
+  operator:
+    securityContext:
+      runAsUser: {{ .uid }}
+  rbacproxy:
+    securityContext:
+      runAsUser: {{ .uid }}
+  cleaner:
+    securityContext:
+      runAsUser: {{ .uid }}
+  podSecurityContext:
+    fsGroup: {{ .uid }}

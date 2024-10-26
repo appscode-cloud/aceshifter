@@ -1,0 +1,6 @@
+securityContext:
+  runAsUser: {{ .uid }}
+
+clusteradm:
+  securityContext:
+    runAsUser: {{ .uid }}
