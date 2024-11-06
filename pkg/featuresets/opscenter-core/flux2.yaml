@@ -9,21 +9,28 @@ helmController:
     runAsUser: {{ .uid }}
     seccompProfile:
       type: RuntimeDefault
+  podSecurityContext: &pcc
+    fsGroup: {{ .uid }}
 
 sourceController:
   securityContext: *scc
+  podSecurityContext: *pcc
 
 imageAutomationController:
   securityContext: *scc
+  podSecurityContext: *pcc
 
 imageReflectionController:
   securityContext: *scc
+  podSecurityContext: *pcc
 
 kustomizeController:
   securityContext: *scc
+  podSecurityContext: *pcc
 
 notificationController:
   securityContext: *scc
+  podSecurityContext: *pcc
 
 cli:
   securityContext: *scc
