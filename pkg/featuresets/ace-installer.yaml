@@ -1,0 +1,14 @@
+precheck:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+
+helm:
+  releases:
+    aceshifter:
+      values:
+        securityContext:
+          runAsUser: {{ .uid }}
+        podSecurityContext:
+          fsGroup: {{ .uid }}
