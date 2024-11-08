@@ -1,3 +1,8 @@
+podSecurityContext:
+  fsGroup: {{ .uid }}
+securityContext:
+  runAsUser: {{ .uid }}
+
 accounts-ui:
   podSecurityContext:
     fsGroup: {{ .uid }}
