@@ -23,6 +23,7 @@ import (
 
 	"go.bytebuilders.dev/aceshifter/pkg/controller"
 
+	helmapi "github.com/fluxcd/helm-controller/api/v2"
 	"github.com/spf13/cobra"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -45,6 +46,7 @@ var (
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
+	utilruntime.Must(helmapi.AddToScheme(scheme))
 	utilruntime.Must(uiapi.AddToScheme(scheme))
 }
 

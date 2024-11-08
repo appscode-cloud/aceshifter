@@ -23,7 +23,9 @@ import (
 	"go.bytebuilders.dev/aceshifter/pkg/featuresets"
 	"go.bytebuilders.dev/aceshifter/pkg/tracker"
 
+	helmapi "github.com/fluxcd/helm-controller/api/v2"
 	core "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -61,7 +63,18 @@ func (r *FeatureReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	uidStart, _, err := tracker.GetUid(r.Client, feature.Spec.Chart.Namespace)
+	ns := core.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: feature.Spec.Chart.Namespace,
+		},
+	}
+	if err := r.Get(ctx, client.ObjectKeyFromObject(&ns), &ns); apierrors.IsNotFound(err) {
+		if err := r.Create(ctx, &ns); err != nil {
+			return ctrl.Result{}, client.IgnoreAlreadyExists(err)
+		}
+	}
+
+	uidStart, _, err := tracker.GetUid(r.Client, ns.Name)
 	if err != nil || uidStart == tracker.UidNone {
 		return ctrl.Result{}, err
 	}
@@ -96,7 +109,7 @@ func (r *FeatureReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *FeatureReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	fn := handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, obj client.Object) []reconcile.Request {
+	mapNamespaceToFeature := func(ctx context.Context, obj client.Object) []reconcile.Request {
 		log := log.FromContext(ctx)
 
 		var list uiapi.FeatureList
@@ -116,12 +129,23 @@ func (r *FeatureReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			})
 		}
 		return reqs
-	})
+	}
+
+	mapHelmReleaseToFeature := func(ctx context.Context, obj client.Object) []reconcile.Request {
+		return []reconcile.Request{{
+			NamespacedName: types.NamespacedName{Name: obj.GetName()},
+		}}
+	}
+
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&uiapi.Feature{}).
-		Watches(&core.Namespace{}, fn, builder.WithPredicates(predicate.NewPredicateFuncs(func(obj client.Object) bool {
-			_, ok := obj.GetAnnotations()[tracker.KeyUid]
-			return ok
-		}))).
+		Watches(
+			&core.Namespace{},
+			handler.EnqueueRequestsFromMapFunc(mapNamespaceToFeature),
+			builder.WithPredicates(predicate.NewPredicateFuncs(func(obj client.Object) bool {
+				_, ok := obj.GetAnnotations()[tracker.KeyUid]
+				return ok
+			}))).
+		Watches(&helmapi.HelmRelease{}, handler.EnqueueRequestsFromMapFunc(mapHelmReleaseToFeature)).
 		Complete(r)
 }
