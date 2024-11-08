@@ -21,15 +21,12 @@ import (
 	"embed"
 	"fmt"
 	"text/template"
-
-	uiapi "kmodules.xyz/resource-metadata/apis/ui/v1alpha1"
 )
 
-//go:embed **/*.yaml
+//go:embed *.yaml **/*.yaml
 var fs embed.FS
 
-func Render(f uiapi.Feature, uid int64) ([]byte, error) {
-	filename := fmt.Sprintf("%s/%s.yaml", f.Spec.FeatureSet, f.Name)
+func Render(filename string, uid int64) ([]byte, error) {
 	t, err := template.ParseFS(fs, filename)
 	if err != nil {
 		return nil, err

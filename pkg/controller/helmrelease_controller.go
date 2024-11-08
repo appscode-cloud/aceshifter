@@ -40,8 +40,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
-// FeatureReconciler reconciles a Feature object
-type FeatureReconciler struct {
+// HelmReleaseReconciler reconciles a Feature object
+type HelmReleaseReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
@@ -55,17 +55,29 @@ type FeatureReconciler struct {
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
-func (r *FeatureReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *HelmReleaseReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	log := log.FromContext(ctx)
 
-	var feature uiapi.Feature
-	if err := r.Get(ctx, req.NamespacedName, &feature); err != nil {
+	var hr helmapi.HelmRelease
+	if err := r.Get(ctx, req.NamespacedName, &hr); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	var feature uiapi.Feature
+	var filename string
+	if err := r.Get(ctx, client.ObjectKey{Name: hr.Name}, &feature); err != nil {
+		if apierrors.IsNotFound(err) && hr.Name == "ace" {
+			filename = hr.Name + ".yaml"
+		} else {
+			return ctrl.Result{}, client.IgnoreNotFound(err)
+		}
+	} else {
+		filename = fmt.Sprintf("%s/%s.yaml", feature.Spec.FeatureSet, feature.Name)
 	}
 
 	ns := core.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: feature.Spec.Chart.Namespace,
+			Name: hr.Spec.TargetNamespace,
 		},
 	}
 	if err := r.Get(ctx, client.ObjectKeyFromObject(&ns), &ns); apierrors.IsNotFound(err) {
@@ -85,16 +97,17 @@ func (r *FeatureReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 			Namespace: "kubeops",
 		},
 	}
+	configKey := hr.Name + ".yaml"
 	result, err := controllerutil.CreateOrPatch(ctx, r.Client, &cm, func() error {
 		if cm.Data == nil {
 			cm.Data = map[string]string{}
 		}
 
-		vals, err := featuresets.Render(feature, uidStart)
+		vals, err := featuresets.Render(filename, uidStart)
 		if err != nil {
-			cm.Data[feature.Name+".yaml"] = "{}"
+			cm.Data[configKey] = "{}"
 		} else {
-			cm.Data[feature.Name+".yaml"] = string(vals)
+			cm.Data[configKey] = string(vals)
 		}
 		return nil
 	})
@@ -102,17 +115,17 @@ func (r *FeatureReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 		return ctrl.Result{}, err
 	}
 	if result != controllerutil.OperationResultNone {
-		log.Info(fmt.Sprintf("%s configmap", result))
+		log.Info(fmt.Sprintf("%s configmap key %s", result, configKey))
 	}
 	return ctrl.Result{}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *FeatureReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	mapNamespaceToFeature := func(ctx context.Context, obj client.Object) []reconcile.Request {
+func (r *HelmReleaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	mapNamespaceToHelmRelease := func(ctx context.Context, obj client.Object) []reconcile.Request {
 		log := log.FromContext(ctx)
 
-		var list uiapi.FeatureList
+		var list helmapi.HelmReleaseList
 		err := r.List(context.TODO(), &list)
 		if err != nil {
 			log.Error(err, "unable to list features")
@@ -120,32 +133,25 @@ func (r *FeatureReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		}
 
 		reqs := make([]reconcile.Request, 0, len(list.Items))
-		for _, feature := range list.Items {
-			if feature.Spec.Chart.Namespace != obj.GetName() {
+		for _, hr := range list.Items {
+			if hr.Spec.TargetNamespace != obj.GetName() {
 				continue
 			}
 			reqs = append(reqs, reconcile.Request{
-				NamespacedName: types.NamespacedName{Name: feature.Name},
+				NamespacedName: types.NamespacedName{Name: hr.Name},
 			})
 		}
 		return reqs
 	}
 
-	mapHelmReleaseToFeature := func(ctx context.Context, obj client.Object) []reconcile.Request {
-		return []reconcile.Request{{
-			NamespacedName: types.NamespacedName{Name: obj.GetName()},
-		}}
-	}
-
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&uiapi.Feature{}).
+		For(&helmapi.HelmRelease{}).
 		Watches(
 			&core.Namespace{},
-			handler.EnqueueRequestsFromMapFunc(mapNamespaceToFeature),
+			handler.EnqueueRequestsFromMapFunc(mapNamespaceToHelmRelease),
 			builder.WithPredicates(predicate.NewPredicateFuncs(func(obj client.Object) bool {
 				_, ok := obj.GetAnnotations()[tracker.KeyUid]
 				return ok
 			}))).
-		Watches(&helmapi.HelmRelease{}, handler.EnqueueRequestsFromMapFunc(mapHelmReleaseToFeature)).
 		Complete(r)
 }

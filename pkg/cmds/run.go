@@ -142,11 +142,11 @@ func NewCmdRun() *cobra.Command {
 				}
 			}
 
-			if err = (&controller.FeatureReconciler{
+			if err = (&controller.HelmReleaseReconciler{
 				Client: mgr.GetClient(),
 				Scheme: mgr.GetScheme(),
 			}).SetupWithManager(mgr); err != nil {
-				setupLog.Error(err, "unable to create controller", "controller", "Feature")
+				setupLog.Error(err, "unable to create controller", "controller", "HelmRelease")
 				os.Exit(1)
 			}
 
