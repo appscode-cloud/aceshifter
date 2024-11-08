@@ -1,1 +1,10 @@
-{}
+reloader:
+  deployment:
+    securityContext:
+      runAsUser: {{ .uid }}
+    # containerSecurityContext: {}
+    #   # capabilities:
+    #   #   drop:
+    #   #     - ALL
+    #   # allowPrivilegeEscalation: false
+    #   # readOnlyRootFilesystem: true
