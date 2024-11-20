@@ -628,12 +628,12 @@ k8s.io/kube-openapi v0.0.0-20240703190633-0aa61b46e8c2 h1:T5TEV4a+pEjc+j9Xui3MGG
 k8s.io/kube-openapi v0.0.0-20240703190633-0aa61b46e8c2/go.mod h1:UxDHUPsUwTOOxSU+oXURfFBcAS6JwiRXTYqYwfuGowc=
 k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0 h1:jgGTlFYnhF1PM1Ax/lAlxUPE+KfCIXHaathvJg1C3ak=
 k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0/go.mod h1:OLgZIPagt7ERELqWJFomSt595RzquPNLL48iOWgYOg0=
-kmodules.xyz/client-go v0.30.31 h1:P+ZslW5QcgMnMoxo1ZMJrNNcwRwA1BiFct1JvcRQEj0=
-kmodules.xyz/client-go v0.30.31/go.mod h1:CAu+JlA8RVGtj6LQHu0Q1w2mnFUajuti49c7T1AvGdM=
+kmodules.xyz/client-go v0.30.39 h1:/GjcgKLY1WdsHRK+956FXQdqDkJg/voJASo+IFyH0xA=
+kmodules.xyz/client-go v0.30.39/go.mod h1:CAu+JlA8RVGtj6LQHu0Q1w2mnFUajuti49c7T1AvGdM=
 kmodules.xyz/go-containerregistry v0.0.12 h1:Tl32QGmSqRVm9PUEb/f3dgDeu9zW5fVzt3qmAFIE37I=
 kmodules.xyz/go-containerregistry v0.0.12/go.mod h1:KgeNg0hDsgeda+qc0NzWk0iVRdF0+ZIg/oRzGoYh78I=
-kmodules.xyz/resource-metadata v0.21.0 h1:sFH2sIeKo1a5xwOwBnx5RRXjEvisY2xakka2l2wK+XY=
-kmodules.xyz/resource-metadata v0.21.0/go.mod h1:pdge27Crf30IeiBGhy1QIveRiUtJ/QnSSOaO2VxHAmI=
+kmodules.xyz/resource-metadata v0.22.6 h1:3AbZi7n5rC565nXKq3e7G9DA+PDntRWlWvexoAZ1gHI=
+kmodules.xyz/resource-metadata v0.22.6/go.mod h1:zq27dG0YA8WEdOOoyfsLn4TQK5Xxox13dwJKtr66eqU=
 open-cluster-management.io/api v0.14.0 h1:yjhnNeO/QudiIoEi0i/yUYmP3iElAfUgtj4pHMV+4uM=
 open-cluster-management.io/api v0.14.0/go.mod h1:ltijKJhDifrPH0csvCUmFt5lzaERv+BBfh6X3l83rT0=
 rsc.io/binaryregexp v0.2.0/go.mod h1:qTv7/COck+e2FymRvadv62gMdZztPaShugOCi3I+8D8=
