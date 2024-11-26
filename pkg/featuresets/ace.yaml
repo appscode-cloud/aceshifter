@@ -58,6 +58,15 @@ marketplace-ui:
     fsGroup: {{ .uid }}
   securityContext:
     runAsUser: {{ .uid }}
+nats:
+  securityContext:
+    fsGroup: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    runAsUser: {{ .uid }}
+openfga:
+  securityContext:
+    runAsGroup: {{ .uid }}
+    runAsUser: {{ .uid }}
 platform-api:
   podSecurityContext:
     fsGroup: {{ .uid }}
@@ -88,3 +97,9 @@ trickster:
     # fsGroup: {{ .uid }}
   securityContext:
     runAsUser: {{ .uid }}
+  sidecars:
+    spec:
+      auth:
+        securityContext:
+          runAsGroup: {{ .uid }}
+          runAsUser: {{ .uid }}
