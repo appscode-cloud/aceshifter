@@ -1,1 +1,54 @@
-{}
+alertmanager:
+  alertmanagerSpec:
+    securityContext:
+      fsGroup: {{ .uid }}
+      runAsGroup: {{ .uid }}
+      runAsUser: {{ .uid }}
+
+
+prometheusOperator:
+  admissionWebhooks:
+    deployment:
+      securityContext:
+        fsGroup: {{ .uid }}
+        runAsGroup: {{ .uid }}
+        runAsUser: {{ .uid }}
+    patch:
+      securityContext:
+        fsGroup: {{ .uid }}
+        runAsGroup: {{ .uid }}
+        runAsUser: {{ .uid }}
+  securityContext:
+    fsGroup: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    runAsUser: {{ .uid }}
+
+
+kube-state-metrics:
+  securityContext:
+    fsGroup: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    runAsUser: {{ .uid }}
+
+
+prometheus:
+  prometheusSpec:
+    securityContext:
+      fsGroup: {{ .uid }}
+      runAsGroup: {{ .uid }}
+      runAsUser: {{ .uid }}
+
+
+prometheus-node-exporter:
+  securityContext:
+    fsGroup: {{ .uid }}
+    runAsGroup: {{ .uid }}
+    runAsUser: {{ .uid }}
+
+
+thanosRuler:
+  thanosRulerSpec:
+    securityContext:
+      fsGroup: {{ .uid }}
+      runAsGroup: {{ .uid }}
+      runAsUser: {{ .uid }}
