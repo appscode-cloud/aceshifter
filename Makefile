@@ -51,7 +51,7 @@ endif
 ### These variables should not need tweaking.
 ###
 
-SRC_PKGS := cmd pkg test
+SRC_PKGS := cmd pkg
 SRC_DIRS := $(SRC_PKGS) # directories which hold app source (not vendored)
 
 DOCKER_PLATFORMS := linux/amd64 linux/arm64
@@ -311,7 +311,7 @@ install:
 	@cd ../installer; \
 	kubectl create ns $(KUBE_NAMESPACE) || true; \
 	kubectl label ns $(KUBE_NAMESPACE) pod-security.kubernetes.io/enforce=restricted; \
-	helm upgrade -i cluster-importer charts/cluster-importer --wait \
+	helm upgrade -i aceshifter charts/aceshifter --wait \
 		--namespace=$(KUBE_NAMESPACE) --create-namespace \
 		--set image.tag=$(TAG_PROD) \
 		--set imagePullPolicy=$(IMAGE_PULL_POLICY) \
@@ -320,7 +320,7 @@ install:
 .PHONY: uninstall
 uninstall:
 	@cd ../installer; \
-	helm uninstall cluster-importer --namespace=$(KUBE_NAMESPACE) || true
+	helm uninstall aceshifter --namespace=$(KUBE_NAMESPACE) || true
 
 .PHONY: purge
 purge: uninstall
