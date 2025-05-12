@@ -1,1 +1,11 @@
-{}
+controller:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}
+
+webhook:
+  podSecurityContext:
+    fsGroup: {{ .uid }}
+  securityContext:
+    runAsUser: {{ .uid }}

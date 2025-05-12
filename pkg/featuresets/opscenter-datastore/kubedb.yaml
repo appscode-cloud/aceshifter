@@ -25,10 +25,7 @@ sidekick.image:
   securityContext:
     runAsUser: {{ .uid }}
 petset:
-  operator:
-    securityContext:
-      runAsUser: {{ .uid }}
-  rbacproxy:
+  image:
     securityContext:
       runAsUser: {{ .uid }}
   podSecurityContext:
