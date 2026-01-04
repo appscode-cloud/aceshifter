@@ -24,7 +24,7 @@ LABEL org.opencontainers.image.source="https://github.com/appscode-cloud/aceshif
     description="Generate helm values for running ACE on Red Hat OpenShift"
 
 RUN mkdir -p /licenses
-COPY LICENSE /licenses/
+COPY LICENSE.md /licenses/
 
 RUN set -x \
   && microdnf update -y \
