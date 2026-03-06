@@ -20,10 +20,9 @@ import (
 	"context"
 	"fmt"
 
+	helmapi "github.com/fluxcd/helm-controller/api/v2"
 	"go.bytebuilders.dev/aceshifter/pkg/featuresets"
 	"go.bytebuilders.dev/aceshifter/pkg/tracker"
-
-	helmapi "github.com/fluxcd/helm-controller/api/v2"
 	core "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -98,6 +97,9 @@ func (r *HelmReleaseReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		},
 	}
 	configKey := hr.Name + ".yaml"
+	if hr.Name == "ace" && hr.Namespace == "ace-gw" {
+		return ctrl.Result{}, nil
+	}
 	result, err := controllerutil.CreateOrPatch(ctx, r.Client, &cm, func() error {
 		if cm.Data == nil {
 			cm.Data = map[string]string{}
