@@ -66,7 +66,7 @@ func (r *HelmReleaseReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	var feature uiapi.Feature
 	var filename string
 	if err := r.Get(ctx, client.ObjectKey{Name: hr.Name}, &feature); err != nil {
-		if apierrors.IsNotFound(err) && hr.Name == "ace" {
+		if apierrors.IsNotFound(err) && hr.Spec.Chart != nil && hr.Spec.Chart.Spec.Chart == "ace" {
 			filename = hr.Name + ".yaml"
 		} else {
 			return ctrl.Result{}, client.IgnoreNotFound(err)
@@ -98,6 +98,9 @@ func (r *HelmReleaseReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		},
 	}
 	configKey := hr.Name + ".yaml"
+	if hr.Name == "ace" && hr.Namespace == "ace-gw" {
+		configKey = "ace-gw.yaml"
+	}
 	result, err := controllerutil.CreateOrPatch(ctx, r.Client, &cm, func() error {
 		if cm.Data == nil {
 			cm.Data = map[string]string{}
