@@ -155,6 +155,7 @@ func (r *HelmReleaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			builder.WithPredicates(predicate.NewPredicateFuncs(func(obj client.Object) bool {
 				_, ok := obj.GetAnnotations()[tracker.KeyUid]
 				return ok
-			}))).
+			})),
+		).
 		Complete(r)
 }
