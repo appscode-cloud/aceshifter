@@ -38,6 +38,10 @@ cadence:
       containerSecurityContext:
         runAsUser: {{ .uid }}
         runAsGroup: {{ .uid }}
+    checkSchema:
+      postgres:
+        containerSecurityContext:
+          runAsUser: {{ .uid }}
 cluster-ui:
   podSecurityContext:
     fsGroup: {{ .uid }}
