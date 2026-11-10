@@ -18,6 +18,30 @@ billing-ui:
     fsGroup: {{ .uid }}
   securityContext:
     runAsUser: {{ .uid }}
+cadence:
+  global:
+    podSecurityContext:
+      fsGroup: {{ .uid }}
+    containerSecurityContext:
+      runAsUser: {{ .uid }}
+      runAsGroup: {{ .uid }}
+  web:
+    podSecurityContext:
+      fsGroup: {{ .uid }}
+    containerSecurityContext:
+      runAsUser: {{ .uid }}
+      runAsGroup: {{ .uid }}
+  schema:
+    serverJob:
+      podSecurityContext:
+        fsGroup: {{ .uid }}
+      containerSecurityContext:
+        runAsUser: {{ .uid }}
+        runAsGroup: {{ .uid }}
+    checkSchema:
+      postgres:
+        containerSecurityContext:
+          runAsUser: {{ .uid }}
 cluster-ui:
   podSecurityContext:
     fsGroup: {{ .uid }}
